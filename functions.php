@@ -9,11 +9,11 @@
  *
  * @wordpress-plugin
  * Plugin Name: DHL Tracking Form
- * Plugin URI:  https://example.com/plugin-name
+ * Plugin URI:  https://github.com/mnording/woocommerce-dhl-tracking-form
  * Description: Enabling fetching tracking info from DHL Freight.
  * Version:     1.0.0
  * Author:      Mnording
- * Author URI:  https://example.com
+ * Author URI:  https://mnording.com
  * Text Domain: dhl-tracking-form
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
