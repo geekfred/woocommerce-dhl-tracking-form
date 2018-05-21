@@ -2,10 +2,10 @@
 /**
  * DHL Tracking
  *
- * @package     PluginPackage
- * @author      Your Name
- * @copyright   2016 Your Name or Company Name
- * @license     GPL-2.0+
+ * @package     DHL Tracking Form
+ * @author      Mattias Nording
+ * @copyright   2018 Mnording
+ * @license     MIT
  *
  * @wordpress-plugin
  * Plugin Name: DHL Tracking Form
@@ -50,7 +50,6 @@ class DHLTracking {
         wp_enqueue_script( 'dhl-tracking-form');
     }
     public function getTracking($trackingIDUrl){
- // 6498756409
         $getTrackingHtml = $this->doCurl($trackingIDUrl);
         if($this->verifyResponse($getTrackingHtml)){
             $realhtml = $this->cleanHTML($getTrackingHtml);
@@ -87,7 +86,7 @@ class DHLTracking {
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $url,
-            CURLOPT_USERAGENT => 'Codular Sample cURL Request',
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0',
             CURLOPT_SSL_VERIFYPEER => 0
         ));
         $resp = curl_exec($curl);
