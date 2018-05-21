@@ -18,10 +18,11 @@
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
  */
-
+require_once 'classes/DHLWebService.php';
 class DHLTracking {
     public function __construct()
     {
+        $this->dhl = new DhlWebservice("",""); // TODO: Create settings page to control API creds
 
        add_shortcode('dhl-tracking-form', array($this,'render_form'));
         add_action( 'wp_ajax_get_dhl_tracking', array($this,'get_dhl_tracking') );
@@ -49,64 +50,40 @@ class DHLTracking {
     function dhl_tracking_scripts() {
         wp_enqueue_script( 'dhl-tracking-form');
     }
-    public function getTracking($trackingIDUrl){
-        $getTrackingHtml = $this->doCurl($trackingIDUrl);
-        if($this->verifyResponse($getTrackingHtml)){
-            $realhtml = $this->cleanHTML($getTrackingHtml);
-            return $this->createHtml($realhtml);
-        }
-        else{
-            return $this->createHtml("Kunde inte hitta din sändning ännu..");
-        }
-    }
-    private function cleanHTML($html){
-        $pos = strpos($html,'<table class="status-group"');
-        $html = substr($html,$pos);
-        $newend = strpos($html,'</table>');
-        $html = substr($html,0,$newend+8);
-        $html = preg_replace('/class=\"([a-z-]*)\"/i', '', $html);
-        $html = preg_replace('/<font color=\"white\">/i', '', $html);
-        $html = preg_replace('/<\/font>/i', '', $html);
-        return $html;
-    }
-    private function verifyResponse($html){
-        if (strpos($html, '<table class="status-group"') !== false) {
-            return $html;
-        }
-    }
+
     private function createHtml($html){
         $header = "<div id='dhl-tracking-container'><h2>Din sändning:</h2>";
         $footer = "</div>";
         return $header."".$html."".$footer;
     }
-    private function doCurl($url)
-    {
 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => $url,
-            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0',
-            CURLOPT_SSL_VERIFYPEER => 0
-        ));
-        $resp = curl_exec($curl);
-        if($resp == false) {
-            die('Error: "' . curl_error($curl) . '" - Code: ' . curl_errno($curl));
-        }
-        curl_close($curl);
-        return $resp;
-    }
     function get_dhl_tracking() {
-        $language = substr(get_bloginfo("language"),0,2);
 
         $trackingId = $_GET['trackingID'];
-        $trackurl = 'https://service.apport.net/np/public/servicepoint/trackAndTrace?language='.$language.'&method=search&queryConsNo='.$trackingId;
+        $resp = "";
+        if($trackingId != ""){
+            $resp = $this->dhl->GetByShipmentIdPublic($trackingId);
+        }
         if($trackingId == ""){
             $orderid = urlencode($_GET["orderID"]);
-            $trackurl = "https://service.apport.net/np/public/servicepoint/trackAndTrace?language=".$language."&queryReference=".$orderid;
+            $resp =  $this->dhl->GetShipmentByReferencePublic($orderid);
         }
-
-                echo $this->getTracking($trackurl);
+        $html = "<table>";
+        foreach($resp as $data){
+            $html .= "<tr>";
+            $html .= "<td>";
+            $html .=   $data["date"];
+            $html .= "</td>";
+            $html .= "<td>";
+            $html .= $data["time"];
+            $html .= "</td>";
+            $html .= "<td>";
+            $html .= $data["descr"];
+            $html .= "</td>";
+            $html .= "</tr>";
+        }
+        $html .= "</table>";
+        echo $this->createHtml($html);
         wp_die(); // this is required to terminate immediately and return a proper response
     }
 }
