@@ -68,7 +68,7 @@ class DHLTracking {
                     <tr valign="top">
                         <th scope="row"><?php _e("Api Username","dhl-tracking-form"); ?></th>
                         <td><input type="text" name="api_username" value="<?php echo esc_attr( get_option('api_username') ); ?>" /></td>
-                        <td><?php _e("What is your API username. Should be the same as your login to the myACT portal","dhl-tracking-form"); ?> -> <a href="https://activetracing.dhl.com/DatPublic/login.do?">Click here for Portal</a></td>
+                        <td><?php _e("What is your API username. Should be the same as your login to the myACT portal","dhl-tracking-form"); ?> -> <a href="https://activetracing.dhl.com/DatPublic/login.do?"><?php _e("Click here for Portal","dhl-tracking-form");?></a></td>
                     </tr>
 
                     <tr valign="top">
