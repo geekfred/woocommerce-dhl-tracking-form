@@ -79,7 +79,7 @@ class DHLTracking {
                     </tr>
                     <tr valign="top">
                         <th scope="row"><?php _e("Create Debug log?","dhl-tracking-form"); ?></th>
-                        <td><input name="should_log" type="checkbox" value="1" <?php checked( '1', get_option( 'should_log' ) ); ?> />Yes</td>
+                        <td><input name="should_log" type="checkbox" value="1" <?php checked( '1', get_option( 'should_log' ) ); ?> /><?php _e("Yes","dhl-tracking-form")?></td>
                     </tr>
                 </table>
 
