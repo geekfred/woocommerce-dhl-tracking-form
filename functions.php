@@ -22,7 +22,6 @@ require_once 'classes/DHLWebService.php';
 class DHLTracking {
     public function __construct()
     {
-        $this->dhl = new DhlWebservice("",""); // TODO: Create settings page to control API creds
 
        add_shortcode('dhl-tracking-form', array($this,'render_form'));
         add_action( 'wp_ajax_get_dhl_tracking', array($this,'get_dhl_tracking') );
@@ -34,23 +33,25 @@ class DHLTracking {
         register_setting( 'dhl_tracking_settings-group', 'private_api' );
         register_setting( 'dhl_tracking_settings-group', 'api_password' );
         register_setting( 'dhl_tracking_settings-group', 'api_username' );
+        register_setting( 'dhl_tracking_settings-group', 'should_log' );
     }
     public function dhl_tracking_plugin_create_menu() {
-        add_options_page('DHL Tracking Form', 'DHL Tracking', 'administrator','dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
+        add_options_page('DHL Tracking Settings', 'DHL Tracking', 'administrator','dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
 
     }
     public function dhl_tracking_settings_page() {
         ?>
         <div class="wrap">
             <h1>Your Plugin Name</h1>
-
+            <?php echo get_option('private_api'); ?>
             <form method="post" action="options.php">
                 <?php settings_fields( 'dhl_tracking_settings-group' ); ?>
                 <?php do_settings_sections( 'dhl_tracking_settings-group' ); ?>
+
                 <table class="form-table">
                     <tr valign="top">
                         <th scope="row">Use Private Methods?</th>
-                        <td><input type="checkbox" name="private_api" value="<?php echo esc_attr( get_option('private_api') ); ?>" />Yes</td>
+                        <td><input name="private_api" type="checkbox" value="1" <?php checked( '1', get_option( 'private_api' ) ); ?> />Yes</td>
                     </tr>
 
                     <tr valign="top">
@@ -61,6 +62,10 @@ class DHLTracking {
                     <tr valign="top">
                         <th scope="row">API Password</th>
                         <td><input type="password" name="api_password" value="<?php echo esc_attr( get_option('api_password') ); ?>" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row">Create Debug log?</th>
+                        <td><input name="should_log" type="checkbox" value="1" <?php checked( '1', get_option( 'should_log' ) ); ?> />Yes</td>
                     </tr>
                 </table>
 
@@ -101,15 +106,26 @@ class DHLTracking {
     }
 
     function get_dhl_tracking() {
-
+        $this->dhl = new DhlWebservice(get_option('api_password'),get_option('api_username'),get_option('should_log'));
         $trackingId = $_GET['trackingID'];
         $resp = "";
+        $privateAPI = get_option('private_api');
+
         if($trackingId != ""){
-            $resp = $this->dhl->GetByShipmentIdPublic($trackingId);
+            if($privateAPI === "1"){
+                $resp = $this->dhl->GetByShipmentId($trackingId);
+            }else{
+                $resp = $this->dhl->GetByShipmentIdPublic($trackingId);
+            }
+
         }
         if($trackingId == ""){
             $orderid = urlencode($_GET["orderID"]);
-            $resp =  $this->dhl->GetShipmentByReferencePublic($orderid);
+            if($privateAPI === "1"){
+                $resp = $this->dhl->GetShipmentByReference($orderid);
+            }else {
+                $resp = $this->dhl->GetShipmentByReferencePublic($orderid);
+            }
         }
         $html = "<table>";
         foreach($resp as $data){

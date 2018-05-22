@@ -23,10 +23,17 @@ class clsWSSEAuth {
 }
 class DhlWebservice
 {
-    function __construct($pass,$user){
+    function __construct($pass,$user,$log = false){
         $this->wsdl = "https://actws.dhl.com/shipmentTrackingWsV4/services/shipmentTrackingWsV4?wsdl";
         $this->pass = $pass;
         $this->user = $user;
+        $this->shouldLog = false;
+        if($log === "1"){
+            $this->logger = new WC_Logger();
+            $this->shouldLog = true;
+            $this->SaveLog("Created DHLService");
+        }
+
     }
     /***
      * @param $shipmentId What is the shipment ID we are looking for?
@@ -91,6 +98,11 @@ class DhlWebservice
         $params = new SoapVar($wrapper,XSD_ANYTYPE);
         return array($params);
     }
+    private function SaveLog($message){
+        $message = str_replace(get_option('api_password'),'XXXXXXXX',$message); // make sure to not log passwords
+        $this->logger->debug($message,array( 'source' => 'dhl-tracking-form' ));
+     //   error_log($message,3,"/wp-content/uploads/wc-logs/dhl_tracking.txt");
+    }
     /***
      * @return SoapClient Getting you a properly initialized and created SoapClient
      */
@@ -109,12 +121,24 @@ class DhlWebservice
         $xml = null;
 
         try{
+            if( $this->shouldLog){
+                $this->SaveLog("Preparing call:");
+                $this->SaveLog("making call to ".$function);
+                $this->SaveLog("With payload: ");
+                $this->SaveLog(print_r($payload,true));
+            }
             $xml = $client->__soapCall($function,$payload);
-
+            if( $this->shouldLog) {
+                $this->SaveLog("recieved correct XML");
+                $this->SaveLog((string)$xml);
+            }
         }
         catch(Exception $e){
-
             $res = $client->__getLastResponse();
+            if( $this->shouldLog) {
+                $this->SaveLog("Got error XML ");
+                $this->SaveLog($res);
+            }
             $clean_xml = $this->cleanXML($res);
             $xml = simplexml_load_string($clean_xml);
 
@@ -169,6 +193,10 @@ class DhlWebservice
         $objSoapVarWSSEToken = new SoapVar($objWSSEToken, SOAP_ENC_OBJECT, NULL, $strWSSENS, 'UsernameToken', $strWSSENS);
         $objSoapVarHeaderVal=new SoapVar($objSoapVarWSSEToken, SOAP_ENC_OBJECT, NULL, $strWSSENS, 'Security', $strWSSENS);
         $objSoapVarWSSEHeader = new SoapHeader($strWSSENS, 'Security', $objSoapVarHeaderVal,true);
+        if( $this->shouldLog) {
+            $this->SaveLog("Created login headers ");
+            $this->SaveLog(print_r($objSoapVarWSSEHeader,true));
+        }
         return $objSoapVarWSSEHeader;
     }
 }
