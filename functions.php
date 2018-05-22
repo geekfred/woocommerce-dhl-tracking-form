@@ -45,7 +45,7 @@ class DHLTracking {
     }
     function register_dhl_scripts()
     {
-        wp_register_script( 'dhl-tracking-form', plugins_url('dhl-tracking.js',__FILE__), array('jquery'), '1.0',true );
+        wp_register_script( 'dhl-tracking-form', plugins_url('dhl-main.js',__FILE__), array('jquery'), '1.0',true );
     }
     function dhl_tracking_scripts() {
         wp_enqueue_script( 'dhl-tracking-form');
