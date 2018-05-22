@@ -27,12 +27,55 @@ class DHLTracking {
        add_shortcode('dhl-tracking-form', array($this,'render_form'));
         add_action( 'wp_ajax_get_dhl_tracking', array($this,'get_dhl_tracking') );
         add_action('wp_enqueue_scripts',array($this,'register_dhl_scripts'));
+        add_action('admin_menu', array($this,'dhl_tracking_plugin_create_menu'));
+        add_action( 'admin_init', array($this,'dhl_tracking_plugin_settings') );
+    }
+    public function dhl_tracking_plugin_settings() {
+        register_setting( 'dhl_tracking_settings-group', 'private_api' );
+        register_setting( 'dhl_tracking_settings-group', 'api_password' );
+        register_setting( 'dhl_tracking_settings-group', 'api_username' );
+    }
+    public function dhl_tracking_plugin_create_menu() {
+        add_options_page('DHL Tracking Form', 'DHL Tracking', 'administrator','dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
 
     }
+    public function dhl_tracking_settings_page() {
+        ?>
+        <div class="wrap">
+            <h1>Your Plugin Name</h1>
+
+            <form method="post" action="options.php">
+                <?php settings_fields( 'dhl_tracking_settings-group' ); ?>
+                <?php do_settings_sections( 'dhl_tracking_settings-group' ); ?>
+                <table class="form-table">
+                    <tr valign="top">
+                        <th scope="row">Use Private Methods?</th>
+                        <td><input type="checkbox" name="private_api" value="<?php echo esc_attr( get_option('private_api') ); ?>" />Yes</td>
+                    </tr>
+
+                    <tr valign="top">
+                        <th scope="row">Api Username</th>
+                        <td><input type="text" name="api_username" value="<?php echo esc_attr( get_option('api_username') ); ?>" /></td>
+                    </tr>
+
+                    <tr valign="top">
+                        <th scope="row">API Password</th>
+                        <td><input type="password" name="api_password" value="<?php echo esc_attr( get_option('api_password') ); ?>" /></td>
+                    </tr>
+                </table>
+
+                <?php submit_button(); ?>
+
+            </form>
+        </div>
+    <?php }
     public function render_form(){
         $html = '<style>';
         $html .= '#dhl-tracking-form-container {border-bottom: 1px dotted black;float: left;width: 100%; padding: 10px;}';
         $html .= '#dhl-tracking-form-container button { float:right;}';
+        $html .= '#dhl-tracking-response-container{ float:left;width:100%;position:relative;}';
+        $html .= '.loader {border: 16px solid #f3f3f3;border-top: 16px solid #3498db;border-radius: 50%;width: 120px;height: 120px; animation: spin 2s linear infinite; position:absolute;left:45%;}';
+        $html .= '@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}';
         $html .= '</style>';
         $html .= "<div id='dhl-tracking-form-container'>";
         $html .= __("Tracking ID","dhl-tracking-form")." <input type='text' name='trackingid' id='trackingid' placeholder='Sändnings ID'>";
