@@ -104,7 +104,7 @@ msgid ""
 "What is your API username. Should be the same as your login to the myACT "
 "portal"
 msgstr ""
-"Vad är ditt API användarnamn? Ska vara samma som ditt lösenord till myACT "
+"Vad är ditt API användarnamn? Ska vara samma som ditt användarnamn till myACT "
 "portalen"
 
 #: functions.php:59
