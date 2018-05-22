@@ -15,6 +15,7 @@
  * Author:      Mnording
  * Author URI:  https://mnording.com
  * Text Domain: dhl-tracking-form
+ * Domain Path: /languages
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
  */
@@ -42,29 +43,38 @@ class DHLTracking {
     public function dhl_tracking_settings_page() {
         ?>
         <div class="wrap">
-            <h1>Your Plugin Name</h1>
-            <?php echo get_option('private_api'); ?>
+            <h1>DHL Tracking Form</h1>
+
             <form method="post" action="options.php">
                 <?php settings_fields( 'dhl_tracking_settings-group' ); ?>
                 <?php do_settings_sections( 'dhl_tracking_settings-group' ); ?>
 
                 <table class="form-table">
                     <tr valign="top">
-                        <th scope="row">Use Private Methods?</th>
-                        <td><input name="private_api" type="checkbox" value="1" <?php checked( '1', get_option( 'private_api' ) ); ?> />Yes</td>
+                        <th scope="row"><?php _e("Use Private Methods?","dhl-tracking-form"); ?></th>
+                        <td><input name="private_api" type="checkbox" value="1" <?php checked( '1', get_option( 'private_api' ) ); ?> /><?php _e("Yes","dhl-tracking-form")?></td>
+                        <td><?php _e("This requires an API Key, but also ensure that only your own consignments are returned from the API.","dhl-tracking-form");?>
+                            <strong><?php _e(" Recommended if you use non-unique references","dhl-tracking-form")?></strong>
+                        <br/>
+                            <?php _e("In order to enable private methods on your account, you must email se.ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT Webservice and specify your myACT account. ","dhl-tracking-form"); ?>
+                        </td>
+
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row">Api Username</th>
+                        <th scope="row"><?php _e("Api Username","dhl-tracking-form"); ?></th>
                         <td><input type="text" name="api_username" value="<?php echo esc_attr( get_option('api_username') ); ?>" /></td>
+                        <td><?php _e("What is your API username. Should be the same as your login to the myACT portal","dhl-tracking-form"); ?> -> <a href="https://activetracing.dhl.com/DatPublic/login.do?">Click here for Portal</a></td>
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row">API Password</th>
+                        <th scope="row"><?php _e("API Password","dhl-tracking-form"); ?></th>
                         <td><input type="password" name="api_password" value="<?php echo esc_attr( get_option('api_password') ); ?>" /></td>
+                        <td><?php _e("What is your API password. Should be the same as your password to the myACT portal","dhl-tracking-form"); ?></td>
+
                     </tr>
                     <tr valign="top">
-                        <th scope="row">Create Debug log?</th>
+                        <th scope="row"><?php _e("Create Debug log?","dhl-tracking-form"); ?></th>
                         <td><input name="should_log" type="checkbox" value="1" <?php checked( '1', get_option( 'should_log' ) ); ?> />Yes</td>
                     </tr>
                 </table>
@@ -100,7 +110,7 @@ class DHLTracking {
     }
 
     private function createHtml($html){
-        $header = "<div id='dhl-tracking-container'><h2>Din sändning:</h2>";
+        $header = "<div id='dhl-tracking-container'><h2>".__("Your shipment:","dhl-tracking-form")."</h2>";
         $footer = "</div>";
         return $header."".$html."".$footer;
     }
@@ -146,4 +156,7 @@ class DHLTracking {
         wp_die(); // this is required to terminate immediately and return a proper response
     }
 }
-$dhl = new DHLTracking();
+if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+    $dhl = new DHLTracking();
+}
+

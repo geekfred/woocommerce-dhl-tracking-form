@@ -43,7 +43,7 @@ class DhlWebservice
         $client = $this->getSoapClient();
         $xml = $this->makeSoapCall($client,"GetConsignmentsByIdentifierPublic",$this->GetPayloadForShipmentId($shipmentId));
         if(isset($xml->Body->Fault)){
-            return "Could not find Package";
+            return __("Could not find Package","dhl-tracking-form");
         }
         $history =  $xml->Body->GetConsignmentsByIdentifierPublicResponse->consignment->eventHistory;
         return $this->cleanResponse($history);
@@ -58,7 +58,7 @@ class DhlWebservice
         $client->__setSoapHeaders($this->CreateLoginHeaders());
         $xml = $this->makeSoapCall($client,"GetConsignmentsByIdentifier",$this->GetPayloadForShipmentId($shipmentId));
         if(isset($xml->Body->Fault)){
-            return "Could not find Package";
+            return __("Could not find Package","dhl-tracking-form");
         }
         $history =  $xml->Body->GetConsignmentsByIdentifierResponse->consignment->eventHistory;
         return $this->cleanResponse($history);
@@ -99,9 +99,8 @@ class DhlWebservice
         return array($params);
     }
     private function SaveLog($message){
-        $message = str_replace(get_option('api_password'),'XXXXXXXX',$message); // make sure to not log passwords
+        $message = str_replace($this->pass,'XXXXXXXX',$message); // make sure to not log passwords
         $this->logger->debug($message,array( 'source' => 'dhl-tracking-form' ));
-     //   error_log($message,3,"/wp-content/uploads/wc-logs/dhl_tracking.txt");
     }
     /***
      * @return SoapClient Getting you a properly initialized and created SoapClient
@@ -143,10 +142,8 @@ class DhlWebservice
             $xml = simplexml_load_string($clean_xml);
 
             if ($xml === false) {
-                echo "Failed loading XML\n";
-                foreach(libxml_get_errors() as $error) {
-                    echo "\t", $error->message;
-                }
+
+
             }
 
         }
@@ -158,13 +155,12 @@ class DhlWebservice
      */
     private function cleanResponse($history){
         $cleanData = array();
-        foreach($history->eventData as $event){
+        for($i = count($history->eventData)-1; $i >=0; $i--){
             $cleanData[] = array(
-                "date" => substr((string)$event->eventDate,0,10),
-                "time" => substr((string)$event->eventTime,0,8),
-                "descr" => (string)$event->eventDescription
+                "date" => substr((string)$history->eventData[$i]->eventDate,0,10),
+                "time" => substr((string)$history->eventData[$i]->eventTime,0,8),
+                "descr" => (string)$history->eventData[$i]->eventDescription
             );
-
         }
         return $cleanData;
     }
