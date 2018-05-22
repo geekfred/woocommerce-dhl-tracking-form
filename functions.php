@@ -29,6 +29,10 @@ class DHLTracking {
         add_action('wp_enqueue_scripts',array($this,'register_dhl_scripts'));
         add_action('admin_menu', array($this,'dhl_tracking_plugin_create_menu'));
         add_action( 'admin_init', array($this,'dhl_tracking_plugin_settings') );
+        add_action( 'plugins_loaded', array($this,'dhl_tracking_plugin_textdomain') );
+    }
+    function dhl_tracking_plugin_textdomain() {
+        load_plugin_textdomain( 'dhl-tracking-form', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
     }
     public function dhl_tracking_plugin_settings() {
         register_setting( 'dhl_tracking_settings-group', 'private_api' );

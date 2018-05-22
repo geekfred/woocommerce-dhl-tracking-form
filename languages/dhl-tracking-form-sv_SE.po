@@ -1,0 +1,116 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: DHL Tracking Form\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-22 19:04+0000\n"
+"PO-Revision-Date: 2018-05-22 19:09+0000\n"
+"Last-Translator: mattias <mattiasnording@gmail.com>\n"
+"Language-Team: Svenska\n"
+"Language: sv_SE\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: functions.php:61
+msgid " Recommended if you use non-unique references"
+msgstr "Rekomenderat om du använder icke-unika referenser"
+
+#: functions.php:75
+msgid "API Password"
+msgstr "API Lösenord"
+
+#: functions.php:69
+msgid "Api Username"
+msgstr "API Användarnamn"
+
+#: classes/DHLWebService.php:46 classes/DHLWebService.php:61
+msgid "Could not find Package"
+msgstr "Kunde inte hitta paket"
+
+#: functions.php:81
+msgid "Create Debug log?"
+msgstr "Skapa debug-log?"
+
+#. Name of the plugin
+msgid "DHL Tracking Form"
+msgstr "DHL Tracking Form"
+
+#. Description of the plugin
+msgid "Enabling fetching tracking info from DHL Freight."
+msgstr "Hämtar spårningsinformation från DHL Freight"
+
+#. URI of the plugin
+msgid "https://github.com/mnording/woocommerce-dhl-tracking-form"
+msgstr "https://github.com/mnording/woocommerce-dhl-tracking-form"
+
+#. Author URI of the plugin
+msgid "https://mnording.com"
+msgstr "https://mnording.com"
+
+#: functions.php:63
+msgid ""
+"In order to enable private methods on your account, you must email se."
+"ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT "
+"Webservice and specify your myACT account. "
+msgstr ""
+"För att aktivera privata metoder på ditt myACT-konto måste du maila se."
+"ecom@dhl.com eller ringa  0771 345 345 och begära access till ACT Webservice "
+"för ditt myACT konto."
+
+#. Author of the plugin
+msgid "Mnording"
+msgstr ""
+
+#: functions.php:101
+msgid "or"
+msgstr "eller"
+
+#: functions.php:101
+msgid "Order Id"
+msgstr "Order ID"
+
+#: functions.php:60
+msgid ""
+"This requires an API Key, but also ensure that only your own consignments "
+"are returned from the API."
+msgstr ""
+"Detta kräver en API nyckel, men gör även att endast era egna skeppningar "
+"returneras av APIt."
+
+#: functions.php:102
+msgid "Track package"
+msgstr "Spåra paket"
+
+#: functions.php:100
+msgid "Tracking ID"
+msgstr "Sändnings ID"
+
+#: functions.php:58
+msgid "Use Private Methods?"
+msgstr "Använda privata metoder?"
+
+#: functions.php:77
+msgid ""
+"What is your API password. Should be the same as your password to the myACT "
+"portal"
+msgstr ""
+"Vad är ditt API lösenord? Ska vara samma som ditt lösenord till myACT "
+"portalen"
+
+#: functions.php:71
+msgid ""
+"What is your API username. Should be the same as your login to the myACT "
+"portal"
+msgstr ""
+"Vad är ditt API användarnamn? Ska vara samma som ditt lösenord till myACT "
+"portalen"
+
+#: functions.php:59
+msgid "Yes"
+msgstr "Ja"
+
+#: functions.php:117
+msgid "Your shipment:"
+msgstr "Din sändning:"

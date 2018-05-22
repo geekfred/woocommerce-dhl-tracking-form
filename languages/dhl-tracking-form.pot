@@ -1,0 +1,108 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: DHL Tracking Form\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-22 19:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: functions.php:61
+msgid " Recommended if you use non-unique references"
+msgstr ""
+
+#: functions.php:75
+msgid "API Password"
+msgstr ""
+
+#: functions.php:69
+msgid "Api Username"
+msgstr ""
+
+#: classes/DHLWebService.php:46 classes/DHLWebService.php:61
+msgid "Could not find Package"
+msgstr ""
+
+#: functions.php:81
+msgid "Create Debug log?"
+msgstr ""
+
+#. Name of the plugin
+msgid "DHL Tracking Form"
+msgstr ""
+
+#. Description of the plugin
+msgid "Enabling fetching tracking info from DHL Freight."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/mnording/woocommerce-dhl-tracking-form"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://mnording.com"
+msgstr ""
+
+#: functions.php:63
+msgid ""
+"In order to enable private methods on your account, you must email se."
+"ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT "
+"Webservice and specify your myACT account. "
+msgstr ""
+
+#. Author of the plugin
+msgid "Mnording"
+msgstr ""
+
+#: functions.php:101
+msgid "or"
+msgstr ""
+
+#: functions.php:101
+msgid "Order Id"
+msgstr ""
+
+#: functions.php:60
+msgid ""
+"This requires an API Key, but also ensure that only your own consignments "
+"are returned from the API."
+msgstr ""
+
+#: functions.php:102
+msgid "Track package"
+msgstr ""
+
+#: functions.php:100
+msgid "Tracking ID"
+msgstr ""
+
+#: functions.php:58
+msgid "Use Private Methods?"
+msgstr ""
+
+#: functions.php:77
+msgid ""
+"What is your API password. Should be the same as your password to the myACT "
+"portal"
+msgstr ""
+
+#: functions.php:71
+msgid ""
+"What is your API username. Should be the same as your login to the myACT "
+"portal"
+msgstr ""
+
+#: functions.php:59
+msgid "Yes"
+msgstr ""
+
+#: functions.php:117
+msgid "Your shipment:"
+msgstr ""
