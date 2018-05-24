@@ -47,7 +47,8 @@ class DhlWebservice
             return __("Could not find Package","dhl-tracking-form");
         }
         $history =  $xml->Body->GetConsignmentsByIdentifierPublicResponse->consignment->eventHistory;
-        return $this->cleanResponse($history);
+        $destination = $xml->Body->GetConsignmentsByIdentifierPublicResponse->consignment->consigneeName;
+        return $this->cleanResponse($history,$destination);
     }
     /***
      * Gets you a result only on your shipments. ! Requires API Credentials !
@@ -62,20 +63,23 @@ class DhlWebservice
             return __("Could not find Package","dhl-tracking-form");
         }
         $history =  $xml->Body->GetConsignmentsByIdentifierResponse->consignment->eventHistory;
-        return $this->cleanResponse($history);
+        $destination = $xml->Body->GetConsignmentsByIdentifierResponse->consignment->consigneeName;
+        return $this->cleanResponse($history,$destination);
     }
     public function GetShipmentByReferencePublic($reference){
         $client = $this->getSoapClient();
         $xml = $this->makeSoapCall($client,'GetConsignmentByReferencePublic',$this->GetPayloadForReference($reference));
         $history = ($xml->Body->GetConsignmentByReferencePublicResponse->consignmentPublic->eventHistory);
-        return $this->cleanResponse($history);
+        $destination = $xml->Body->GetConsignmentByReferencePublicResponse->consignmentPublic->consigneeName;
+        return $this->cleanResponse($history,$destination);
     }
     public function GetShipmentByReference($reference){
         $client = $this->getSoapClient();
         $client->__setSoapHeaders($this->CreateLoginHeaders());
         $xml = $this->makeSoapCall($client,'GetConsignmentsByReference',$this->GetPayloadForReference($reference));
         $history = ($xml->Body->GetConsignmentsByReferenceResponse->consignment->eventHistory);
-        return $this->cleanResponse($history);
+        $destination = $xml->Body->GetConsignmentsByReferenceResponse->consignment->consigneeName;
+        return $this->cleanResponse($history,$destination);
     }
     private function GetPayloadForReference($ref){
         $wrapper = new StdClass;
@@ -154,9 +158,13 @@ class DhlWebservice
      * @param $history All the event-history
      * @return array a new clean array with only the date, time and description
      */
-    private function cleanResponse($history){
+    private function cleanResponse($history,$destination){
         $cleanData = array();
         for($i = count($history->eventData)-1; $i >=0; $i--){
+           if($history->eventData[$i]->eventKey->eventCode == 24 && $history->eventData[$i]->eventKey->reasonCode == 905){
+              $this->logger->info("Think this is on destination at ".$destination,array( 'source' => 'dhl-tracking-form' ));
+           }
+
             $cleanData[] = array(
                 "date" => substr((string)$history->eventData[$i]->eventDate,0,10),
                 "time" => substr((string)$history->eventData[$i]->eventTime,0,8),
