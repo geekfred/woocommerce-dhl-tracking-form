@@ -23,10 +23,11 @@ class clsWSSEAuth {
 }
 class DhlWebservice
 {
-    function __construct($pass,$user,$log = false){
+    function __construct($pass,$user,$language ="SV",$log = false){
         $this->wsdl = "https://actws.dhl.com/shipmentTrackingWsV4/services/shipmentTrackingWsV4?wsdl";
         $this->pass = $pass;
         $this->user = $user;
+        $this->language = $language;
         $this->shouldLog = false;
         if($log === "1"){
             $this->logger = new WC_Logger();
@@ -78,7 +79,7 @@ class DhlWebservice
     }
     private function GetPayloadForReference($ref){
         $wrapper = new StdClass;
-        $wrapper->responseLocale = new SoapVar("SV",XSD_STRING);
+        $wrapper->responseLocale = new SoapVar($this->language,XSD_STRING);
         $wrapper->referenceData = new stdClass();
         $wrapper->referenceData->reference = new SoapVar($ref, XSD_STRING);
         $wrapper->referenceData->referenceType = new SoapVar("ALL", XSD_STRING);
@@ -91,7 +92,7 @@ class DhlWebservice
      */
     private function GetPayloadForShipmentId($shipmentId){
         $wrapper = new StdClass;
-        $wrapper->responseLocale = new SoapVar("SV",XSD_STRING);
+        $wrapper->responseLocale = new SoapVar($this->language,XSD_STRING);
         $wrapper->consignmentIdentification = new stdClass();
         $wrapper->consignmentIdentification->identification = new SoapVar($shipmentId, XSD_STRING);
         $wrapper->consignmentIdentification->identificationType = new SoapVar("generic", XSD_STRING);
@@ -159,7 +160,8 @@ class DhlWebservice
             $cleanData[] = array(
                 "date" => substr((string)$history->eventData[$i]->eventDate,0,10),
                 "time" => substr((string)$history->eventData[$i]->eventTime,0,8),
-                "descr" => (string)$history->eventData[$i]->eventDescription
+                "descr" => (string)$history->eventData[$i]->eventDescription,
+                "location" => (string)$history->eventData[$i]->terminalName
             );
         }
         return $cleanData;

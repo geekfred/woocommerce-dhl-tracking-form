@@ -41,7 +41,7 @@ class DHLTracking {
         register_setting( 'dhl_tracking_settings-group', 'should_log' );
     }
     public function dhl_tracking_plugin_create_menu() {
-        add_options_page('DHL Tracking Settings', 'DHL Tracking', 'administrator','woo-dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
+        add_options_page('Woo DHL Tracking Settings', 'Woo DHL Tracking', 'administrator','woo-dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
 
     }
     public function dhl_tracking_settings_page() {
@@ -96,7 +96,7 @@ class DHLTracking {
         $html .= '.loader {border: 16px solid #f3f3f3;border-top: 16px solid #3498db;border-radius: 50%;width: 120px;height: 120px; animation: spin 2s linear infinite; position:absolute;left:45%;}';
         $html .= '@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}';
         $html .= '</style>';
-        $html .= "<div id='woo-dhl-tracking-form-container'>";
+        $html .= "<div id='dhl-tracking-form-container'>";
         $html .= __("Tracking ID","woo-dhl-tracking-form")." <input type='text' name='trackingid' id='trackingid' placeholder='Sändnings ID'>";
         $html .= " ".__("or","woo-dhl-tracking-form")." ".__("Order Id","woo-dhl-tracking-form")." <input type='text' id='orderid' name='orderid' placeholder='Order ID'>";
         $html .= "<button>".__("Track package","woo-dhl-tracking-form")."</button>";
@@ -120,7 +120,9 @@ class DHLTracking {
     }
 
     function get_dhl_tracking() {
-        $this->dhl = new DhlWebservice(get_option('api_password'),get_option('api_username'),get_option('should_log'));
+        $lang = get_bloginfo( $show = 'language');
+        $lang = substr($lang,0,2);
+        $this->dhl = new DhlWebservice(get_option('api_password'),get_option('api_username'),$lang,get_option('should_log'));
         $trackingId = $_GET['trackingID'];
         $resp = "";
         $privateAPI = get_option('private_api');
@@ -145,10 +147,10 @@ class DHLTracking {
         foreach($resp as $data){
             $html .= "<tr>";
             $html .= "<td>";
-            $html .=   $data["date"];
+            $html .=   $data["date"]." ".$data["time"];
             $html .= "</td>";
             $html .= "<td>";
-            $html .= $data["time"];
+            $html .= $data["location"];
             $html .= "</td>";
             $html .= "<td>";
             $html .= $data["descr"];

@@ -14,8 +14,13 @@ Connects to the public API of DHL in order to track shipments made on DHL Freigh
 == Description ==
 This plugin connects to  the Active Tracing API of DHL Freight and creates a shortcode that can be inserted anywhere in your woocommerce site.
 It creates a form where you can search based on shipment ID or your own order-reference.
-Place shortcode `[dhl-tracking-form][/dhl-tracking-form]` in any page or post to render the form.
+Place shortcode `[woo-dhl-tracking-form][/woo-dhl-tracking-form]` in any page or post to render the form.
 In the case that you are using non-unique order-references you can define your API keys in order to limit the consignments to your accounts.
+
+** Disclaimer **
+This plugin has no affiliation with DHL Freight. All product names, logos, and brands are property of their respective owners.
+All company, product and service names used in this website are for identification purposes only.
+Use of these names, logos, and brands does not imply endorsement.
 
 == Installation ==
 Upload to the `/wp-content/plugins/` directory
