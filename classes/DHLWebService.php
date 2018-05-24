@@ -47,7 +47,7 @@ class DhlWebservice
             return __("Could not find Package","dhl-tracking-form");
         }
         $history =  $xml->Body->GetConsignmentsByIdentifierPublicResponse->consignment->eventHistory;
-        $destination = $xml->Body->GetConsignmentsByIdentifierPublicResponse->consignment->consigneeName;
+        $destination = $xml->Body->GetConsignmentsByIdentifierPublicResponse->consignment->consigneeAddress->city;
         return $this->cleanResponse($history,$destination);
     }
     /***
@@ -69,8 +69,8 @@ class DhlWebservice
     public function GetShipmentByReferencePublic($reference){
         $client = $this->getSoapClient();
         $xml = $this->makeSoapCall($client,'GetConsignmentByReferencePublic',$this->GetPayloadForReference($reference));
-        $history = ($xml->Body->GetConsignmentByReferencePublicResponse->consignmentPublic->eventHistory);
-        $destination = $xml->Body->GetConsignmentByReferencePublicResponse->consignmentPublic->consigneeName;
+            $history = ($xml->Body->GetConsignmentByReferencePublicResponse->consignmentPublic->eventHistory);
+        $destination = $xml->Body->GetConsignmentByReferencePublicResponse->consignmentPublic->consigneeAddress->city;
         return $this->cleanResponse($history,$destination);
     }
     public function GetShipmentByReference($reference){
