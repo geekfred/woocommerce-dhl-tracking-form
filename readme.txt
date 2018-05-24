@@ -1,4 +1,4 @@
-=== DHL Tracking Form ===
+=== Woo DHL Tracking Form ===
 Contributors: mnording10
 Tags: woocommerce,dhl,shipment,shipment tracking,dhl tracking
 Requires at least: 4.9.0

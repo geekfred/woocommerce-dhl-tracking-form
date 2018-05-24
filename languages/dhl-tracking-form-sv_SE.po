@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: DHL Tracking Form\n"
+"Project-Id-Version: Woo DHL Tracking Form\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-22 19:59+0000\n"
 "PO-Revision-Date: 2018-05-22 20:07+0000\n"
