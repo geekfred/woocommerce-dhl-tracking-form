@@ -11,7 +11,7 @@
  * Plugin Name: Woo DHL Tracking Form
  * Plugin URI:  https://github.com/mnording/woocommerce-woo-dhl-tracking-form
  * Description: Enabling fetching tracking info from DHL Freight.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Mnording
  * Author URI:  https://mnording.com
  * Text Domain: woo-dhl-tracking-form

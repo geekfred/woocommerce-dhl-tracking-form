@@ -29,8 +29,9 @@ class DhlWebservice
         $this->user = $user;
         $this->language = $language;
         $this->shouldLog = false;
+        $this->logger = new WC_Logger();
         if($log === "1"){
-            $this->logger = new WC_Logger();
+
             $this->shouldLog = true;
             $this->SaveLog("Created DHLService");
         }
