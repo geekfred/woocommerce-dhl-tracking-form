@@ -161,15 +161,17 @@ class DhlWebservice
     private function cleanResponse($history,$destination){
         $cleanData = array();
         for($i = count($history->eventData)-1; $i >=0; $i--){
+            $location = (string)$history->eventData[$i]->terminalName;
            if($history->eventData[$i]->eventKey->eventCode == 24 && $history->eventData[$i]->eventKey->reasonCode == 905){
               $this->logger->info("Think this is on destination at ".$destination,array( 'source' => 'dhl-tracking-form' ));
+               $location = $destination;
            }
 
             $cleanData[] = array(
                 "date" => substr((string)$history->eventData[$i]->eventDate,0,10),
                 "time" => substr((string)$history->eventData[$i]->eventTime,0,8),
                 "descr" => (string)$history->eventData[$i]->eventDescription,
-                "location" => (string)$history->eventData[$i]->terminalName
+                "location" => $location
             );
         }
         return $cleanData;
