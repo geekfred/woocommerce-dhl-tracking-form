@@ -144,6 +144,9 @@ class DHLTracking {
             }
         }
         $html = "<table>";
+        $html .= "<th>".__("Date","woo-dhl-tracking-form")."</th>";
+        $html .= "<th>".__("Location","woo-dhl-tracking-form")."</th>";
+        $html .= "<th>".__("Event","woo-dhl-tracking-form")."</th>";
         foreach($resp as $data){
             $html .= "<tr>";
             $html .= "<td>";
