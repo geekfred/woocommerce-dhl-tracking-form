@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Woo DHL Tracking Form\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-22 19:59+0000\n"
-"PO-Revision-Date: 2018-05-22 20:07+0000\n"
+"POT-Creation-Date: 2018-05-24 09:24+0000\n"
+"PO-Revision-Date: 2018-05-24 09:30+0000\n"
 "Last-Translator: mattias <mattiasnording@gmail.com>\n"
 "Language-Team: Svenska\n"
 "Language: sv_SE\n"
@@ -25,29 +25,33 @@ msgstr "API Lösenord"
 msgid "Api Username"
 msgstr "API Användarnamn"
 
-#: classes/DHLWebService.php:46 classes/DHLWebService.php:61
-msgid "Could not find Package"
-msgstr "Kunde inte hitta paket"
+#: functions.php:71
+msgid "Click here for Portal"
+msgstr "Klicka här för portalen"
 
 #: functions.php:81
 msgid "Create Debug log?"
 msgstr "Skapa debug-log?"
 
-#. Name of the plugin
-msgid "DHL Tracking Form"
-msgstr "DHL Tracking Form"
+#: functions.php:147
+msgid "Date"
+msgstr "Datum"
 
 #. Description of the plugin
 msgid "Enabling fetching tracking info from DHL Freight."
 msgstr "Hämtar spårningsinformation från DHL Freight"
 
+#: functions.php:149
+msgid "Event"
+msgstr "Händelse"
+
 #. URI of the plugin
-msgid "https://github.com/mnording/woocommerce-dhl-tracking-form"
-msgstr "https://github.com/mnording/woocommerce-dhl-tracking-form"
+msgid "https://github.com/mnording/woocommerce-woo-dhl-tracking-form"
+msgstr ""
 
 #. Author URI of the plugin
 msgid "https://mnording.com"
-msgstr "https://mnording.com"
+msgstr ""
 
 #: functions.php:63
 msgid ""
@@ -55,9 +59,13 @@ msgid ""
 "ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT "
 "Webservice and specify your myACT account. "
 msgstr ""
-"För att aktivera privata metoder på ditt myACT-konto måste du maila se."
+"För att aktivera privata metoder på ditt myACT-konto måste du maila se "
 "ecom@dhl.com eller ringa  0771 345 345 och begära access till ACT Webservice "
 "för ditt myACT konto."
+
+#: functions.php:148
+msgid "Location"
+msgstr "Plats"
 
 #. Author of the plugin
 msgid "Mnording"
@@ -76,8 +84,8 @@ msgid ""
 "This requires an API Key, but also ensure that only your own consignments "
 "are returned from the API."
 msgstr ""
-"Detta kräver en API nyckel, men gör även att endast era egna skeppningar "
-"returneras av APIt."
+"Detta kräver en API nyckel, men gör även att endast era egna skeppningar \"\n"
+"\"returneras av APIt."
 
 #: functions.php:102
 msgid "Track package"
@@ -104,16 +112,17 @@ msgid ""
 "What is your API username. Should be the same as your login to the myACT "
 "portal"
 msgstr ""
-"Vad är ditt API användarnamn? Ska vara samma som ditt användarnamn till myACT "
-"portalen"
+"Vad är ditt API användarnamn? Ska vara samma som ditt användarnamn till "
+"myACT portalen"
 
-#: functions.php:59
+#. Name of the plugin
+msgid "Woo DHL Tracking Form"
+msgstr ""
+
+#: functions.php:59 functions.php:82
 msgid "Yes"
 msgstr "Ja"
 
 #: functions.php:117
 msgid "Your shipment:"
 msgstr "Din sändning:"
-
-msgid "Click here for Portal"
-msgstr "Klicka här för portalen"

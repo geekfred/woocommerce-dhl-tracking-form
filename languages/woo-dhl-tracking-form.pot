@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Woo DHL Tracking Form\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-22 19:59+0000\n"
+"POT-Creation-Date: 2018-05-24 09:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -26,24 +26,28 @@ msgstr ""
 msgid "Api Username"
 msgstr ""
 
-#: classes/DHLWebService.php:46 classes/DHLWebService.php:61
-msgid "Could not find Package"
+#: functions.php:71
+msgid "Click here for Portal"
 msgstr ""
 
 #: functions.php:81
 msgid "Create Debug log?"
 msgstr ""
 
-#. Name of the plugin
-msgid "DHL Tracking Form"
+#: functions.php:147
+msgid "Date"
 msgstr ""
 
 #. Description of the plugin
 msgid "Enabling fetching tracking info from DHL Freight."
 msgstr ""
 
+#: functions.php:149
+msgid "Event"
+msgstr ""
+
 #. URI of the plugin
-msgid "https://github.com/mnording/woocommerce-dhl-tracking-form"
+msgid "https://github.com/mnording/woocommerce-woo-dhl-tracking-form"
 msgstr ""
 
 #. Author URI of the plugin
@@ -55,6 +59,10 @@ msgid ""
 "In order to enable private methods on your account, you must email se."
 "ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT "
 "Webservice and specify your myACT account. "
+msgstr ""
+
+#: functions.php:148
+msgid "Location"
 msgstr ""
 
 #. Author of the plugin
@@ -99,13 +107,14 @@ msgid ""
 "portal"
 msgstr ""
 
-#: functions.php:59
+#. Name of the plugin
+msgid "Woo DHL Tracking Form"
+msgstr ""
+
+#: functions.php:59 functions.php:82
 msgid "Yes"
 msgstr ""
 
 #: functions.php:117
 msgid "Your shipment:"
-msgstr ""
-
-msgid "Click here for Portal"
 msgstr ""
