@@ -20,6 +20,8 @@
  * License URI: https://opensource.org/licenses/MIT
  */
 require_once 'classes/DHLWebService.php';
+require_once 'classes/DHLMetaBox.php';
+require_once 'classes/DHLTrackingEmail.php';
 class DHLTracking {
     public function __construct()
     {
@@ -29,9 +31,8 @@ class DHLTracking {
         add_action('admin_menu', array($this,'dhl_tracking_plugin_create_menu'));
         add_action( 'admin_init', array($this,'dhl_tracking_plugin_settings') );
         add_action( 'plugins_loaded', array($this,'dhl_tracking_plugin_textdomain') );
-        add_action("add_meta_boxes", array($this,"add_custom_meta_box"));
-        add_action("save_post", array($this,"save_woo_dhl_tracking_meta_box"), 10, 3);
-        add_action("woocommerce_email_order_meta",array($this,"add_meta_tracking_to_order"));
+        $dhlMetaBox = new DHLMetaBox();
+        $dhlTrackingEmail = new DHLTrackingEmail();
 
         $this->shouldlog= get_option("should_log");
     }
@@ -50,60 +51,7 @@ class DHLTracking {
         add_options_page('Woo DHL Tracking Settings', 'Woo DHL Tracking', 'administrator','woo-dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
 
     }
-    function add_meta_tracking_to_order($order){
-        $this->logger = new WC_Logger();
-        if($order->status === "completed" && get_option("add_to_tracking_page")){
-            if($this->shouldlog){
-                $this->logger->info("Order was completed and settings was enabled","dhl-tracking-form");
-            }
-            $trackingID = get_post_meta($order->id, "woo-dhl-tracking-form-trackingid", true);
-            if($this->shouldlog){
-                $this->logger->info("tracking ID for order was set to ".$trackingID,"dhl-tracking-form");
-            }
-            if($trackingID !== "" && get_option( 'tracking_page' )){
-                $link = get_permalink(get_option( 'tracking_page' ))."?trackingid=".$trackingID;
-                if($this->shouldlog){
-                    $this->logger->info("Link created was: ".$link,"dhl-tracking-form");
-                }
-                echo wp_kses_post('<div style="padding: 20px 0;">');
-                echo "<h2>". __("Track package","woo-dhl-tracking-form")."</h2>";
-                echo "<a href='".$link."'>".__('Click here to track your package', 'woo-dhl-tracking-form' )."</a>";
-               echo "</div>";
-            }
 
-        }
-    }
-    function woo_dhl_tracking_meta_box_markup($object)
-    {
-        wp_nonce_field(basename(__FILE__), "woo-dhl-tracking-form-nonce");
-        ?>
-        <div>
-            <label for="woo-dhl-tracking-form-trackingid"><?php _e("Tracking ID","woo-dhl-tracking-form") ?></label>
-            <input name="woo-dhl-tracking-form-trackingid" type="text" value="<?php echo get_post_meta($object->ID, "woo-dhl-tracking-form-trackingid", true); ?>">
-            </div>
-       <?php
-    }
-    function add_custom_meta_box()
-    {
-        add_meta_box("woo-dhl-tracking-meta-box", "Woo DHL Tracking", array($this,"woo_dhl_tracking_meta_box_markup"), "shop_order", "side", "high", null);
-    }
-    function save_woo_dhl_tracking_meta_box($post_id, $post, $update)
-    {
-        if (!isset($_POST["woo-dhl-tracking-form-nonce"]) || !wp_verify_nonce($_POST["woo-dhl-tracking-form-nonce"], basename(__FILE__)))
-            return $post_id;
-
-        if(!current_user_can("edit_post", $post_id))
-            return $post_id;
-
-        if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE)
-            return $post_id;
-
-        if(isset($_POST["woo-dhl-tracking-form-trackingid"]))
-        {
-            $meta_box_text_value = $_POST["woo-dhl-tracking-form-trackingid"];
-        }
-        update_post_meta($post_id, "woo-dhl-tracking-form-trackingid", $meta_box_text_value);
-    }
     public function dhl_tracking_settings_page() {
         ?>
         <div class="wrap">
@@ -250,6 +198,9 @@ class DHLTracking {
         $html .= "<th>".__("Date","woo-dhl-tracking-form")."</th>";
         $html .= "<th>".__("Location","woo-dhl-tracking-form")."</th>";
         $html .= "<th>".__("Event","woo-dhl-tracking-form")."</th>";
+        if(!is_array($resp)){
+            return $this->createHtml(__("Unable to find your shipment","woo-dhl-tracking-form"));
+        }
         foreach($resp as $data){
             $html .= "<tr>";
             $html .= "<td>";
