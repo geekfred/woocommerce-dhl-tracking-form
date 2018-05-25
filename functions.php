@@ -32,7 +32,7 @@ class DHLTracking {
         add_action("add_meta_boxes", array($this,"add_custom_meta_box"));
         add_action("save_post", array($this,"save_woo_dhl_tracking_meta_box"), 10, 3);
         add_action("woocommerce_email_order_meta",array($this,"add_meta_tracking_to_order"));
-       // $this->logger = new WC_Logger();
+
         $this->shouldlog= get_option("should_log");
     }
     function dhl_tracking_plugin_textdomain() {
@@ -51,6 +51,7 @@ class DHLTracking {
 
     }
     function add_meta_tracking_to_order($order){
+        $this->logger = new WC_Logger();
         if($order->status === "completed" && get_option("add_to_tracking_page")){
             if($this->shouldlog){
                 $this->logger->info("Order was completed and settings was enabled","dhl-tracking-form");
