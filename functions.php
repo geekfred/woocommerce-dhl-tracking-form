@@ -67,9 +67,7 @@ class DHLTracking {
                 }
                 echo wp_kses_post('<div style="padding: 20px 0;">');
                 echo "<h2>". __("Track package","woo-dhl-tracking-form")."</h2>";
-                echo printf(
-                    __( '<a href="%s">Click here to track your package</a>', 'woo-dhl-tracking-form' ),$link
-                );
+                echo "<a href='".$link."'>".__('Click here to track your package', 'woo-dhl-tracking-form' )."</a>";
                echo "</div>";
             }
 
