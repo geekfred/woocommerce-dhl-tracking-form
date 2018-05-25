@@ -18,8 +18,8 @@ class DHLMetaBox
         wp_nonce_field(basename(__FILE__), "woo-dhl-tracking-form-nonce");
         ?>
         <div>
-            <label for="woo-dhl-tracking-form-trackingid"><?php _e("Tracking ID","woo-dhl-tracking-form") ?></label>
-            <input name="woo-dhl-tracking-form-trackingid" type="text" value="<?php echo get_post_meta($object->ID, "woo-dhl-tracking-form-trackingid", true); ?>">
+            <label for="woo_dhl_tracking_form_trackingid"><?php _e("Tracking ID","woo-dhl-tracking-form") ?></label>
+            <input name="woo_dhl_tracking_form_trackingid" type="text" value="<?php echo get_post_meta($object->ID, "woo_dhl_tracking_form_trackingid", true); ?>">
         </div>
         <?php
     }
@@ -38,10 +38,10 @@ class DHLMetaBox
         if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE)
             return $post_id;
 
-        if(isset($_POST["woo-dhl-tracking-form-trackingid"]))
+        if(isset($_POST["woo_dhl_tracking_form_trackingid"]))
         {
-            $meta_box_text_value = $_POST["woo-dhl-tracking-form-trackingid"];
+            $meta_box_text_value = $_POST["woo_dhl_tracking_form_trackingid"];
         }
-        update_post_meta($post_id, "woo-dhl-tracking-form-trackingid", $meta_box_text_value);
+        update_post_meta($post_id, "woo_dhl_tracking_form_trackingid", $meta_box_text_value);
     }
 }

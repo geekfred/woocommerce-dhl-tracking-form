@@ -13,15 +13,15 @@ class DHLTrackingEmail
     }
     function add_meta_tracking_to_order($order){
         $this->logger = new WC_Logger();
-        if($order->status === "completed" && get_option("add_to_tracking_page")){
+        if($order->status === "completed" && get_option("add_to_tracking_page")){ // Order is completed and we want to display the link
             if($this->shouldlog){
                 $this->logger->info("Order was completed and settings was enabled","dhl-tracking-form");
             }
-            $trackingID = get_post_meta($order->id, "woo-dhl-tracking-form-trackingid", true);
+            $trackingID = get_post_meta($order->id, "woo_dhl_tracking_form_trackingid", true);
             if($this->shouldlog){
                 $this->logger->info("tracking ID for order was set to ".$trackingID,"dhl-tracking-form");
             }
-            if($trackingID !== "" && get_option( 'tracking_page' )){
+            if($trackingID !== "" && get_option( 'tracking_page' )){ // We have defined a tracking ID for the order and we have a valid page
                 $link = get_permalink(get_option( 'tracking_page' ))."?trackingid=".$trackingID;
                 if($this->shouldlog){
                     $this->logger->info("Link created was: ".$link,"dhl-tracking-form");

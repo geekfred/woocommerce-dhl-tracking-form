@@ -70,7 +70,6 @@ class DHLTracking {
                         <br/>
                             <?php _e("In order to enable private methods on your account, you must email se.ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT Webservice and specify your myACT account. ","woo-dhl-tracking-form"); ?>
                         </td>
-
                     </tr>
                     <tr valign="top">
                         <th scope="row"><?php _e("Add to tracking page","woo-dhl-tracking-form"); ?></th>
@@ -162,6 +161,13 @@ class DHLTracking {
         $footer = "</div>";
         return $header."".$html."".$footer;
     }
+
+    /***
+     * @param $trackingId What ID are we looking for?
+     * @param $orderID What order ID are we looking for?
+     * @param string $language What language to display the response in?
+     * @return array|string The response array. Cleaned and ready for rendering html
+     */
     private function GetTrackingInfo($trackingId,$orderID,$language="SV"){
         $resp = "";
         $privateAPI = get_option('private_api');
@@ -173,7 +179,7 @@ class DHLTracking {
                 $resp = $this->dhl->GetByShipmentIdPublic($trackingId);
             }
         }
-        if($trackingId == ""){
+        if($trackingId == ""){ // we only check orderID if there is no tracking. Tracking is alot quicker to find
             $orderid = $orderID;
             if($privateAPI === "1"){
                 $resp = $this->dhl->GetShipmentByReference($orderid);
@@ -183,6 +189,10 @@ class DHLTracking {
         }
         return $resp;
     }
+
+    /***
+     *  AJAX from frontend calls this to get the response from the form
+     */
     function get_dhl_tracking() {
         $lang = get_bloginfo( $show = 'language');
         $lang = substr($lang,0,2);
@@ -193,6 +203,11 @@ class DHLTracking {
         echo $html;
         wp_die(); // this is required to terminate immediately and return a proper response
     }
+
+    /***
+     * @param $resp The response array from the dhl web service
+     * @return string Will return rendable HTML
+     */
     private function renderTable($resp){
         $html = "<table>";
         $html .= "<th>".__("Date","woo-dhl-tracking-form")."</th>";
@@ -218,6 +233,7 @@ class DHLTracking {
         return $this->createHtml($html);
 }
 }
+// Gotta make sure we got Woocommerce in the house!
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
     $dhl = new DHLTracking();
 }
