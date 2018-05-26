@@ -27,25 +27,33 @@ class DHLTracking {
     {
        add_shortcode('woo-dhl-tracking-form', array($this,'render_form'));
         add_action( 'wp_ajax_get_dhl_tracking', array($this,'get_dhl_tracking') );
+        add_action( 'wp_ajax_nopriv_get_dhl_tracking', array($this,'get_dhl_tracking') );
         add_action('wp_enqueue_scripts',array($this,'register_dhl_scripts'));
         add_action('admin_menu', array($this,'dhl_tracking_plugin_create_menu'));
         add_action( 'admin_init', array($this,'dhl_tracking_plugin_settings') );
         add_action( 'plugins_loaded', array($this,'dhl_tracking_plugin_textdomain') );
-        $dhlMetaBox = new DHLMetaBox();
-        $dhlTrackingEmail = new DHLTrackingEmail();
-
+        new DHLMetaBox();
+        new DHLTrackingEmail();
         $this->shouldlog= get_option("should_log");
+
     }
     function dhl_tracking_plugin_textdomain() {
         load_plugin_textdomain( 'woo-dhl-tracking-form', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
     }
     public function dhl_tracking_plugin_settings() {
-        register_setting( 'dhl_tracking_settings-group', 'private_api' );
-        register_setting( 'dhl_tracking_settings-group', 'api_password' );
-        register_setting( 'dhl_tracking_settings-group', 'api_username' );
-        register_setting( 'dhl_tracking_settings-group', 'should_log' );
-        register_setting( 'dhl_tracking_settings-group', 'add_to_tracking_page' );
-        register_setting( 'dhl_tracking_settings-group', 'tracking_page' );
+
+        $args = array(
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => NULL,
+        );
+        register_setting( 'dhl_tracking_settings-group', 'private_api' ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'api_password'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'api_username'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'should_log'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'add_to_tracking_page'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'tracking_page' ,$args );
+
     }
     public function dhl_tracking_plugin_create_menu() {
         add_options_page('Woo DHL Tracking Settings', 'Woo DHL Tracking', 'administrator','woo-dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
@@ -169,6 +177,7 @@ class DHLTracking {
      * @return array|string The response array. Cleaned and ready for rendering html
      */
     private function GetTrackingInfo($trackingId,$orderID,$language="SV"){
+
         $resp = "";
         $privateAPI = get_option('private_api');
         $this->dhl = new DhlWebservice(get_option('api_password'),get_option('api_username'),$language,get_option('should_log'));
@@ -187,13 +196,14 @@ class DHLTracking {
                 $resp = $this->dhl->GetShipmentByReferencePublic($orderid);
             }
         }
+
         return $resp;
     }
 
     /***
      *  AJAX from frontend calls this to get the response from the form
      */
-    function get_dhl_tracking() {
+    public function get_dhl_tracking() {
         $lang = get_bloginfo( $show = 'language');
         $lang = substr($lang,0,2);
         $trackingId = $_GET['trackingID'];
