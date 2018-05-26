@@ -26,6 +26,7 @@ class DHLTracking {
 
        add_shortcode('woo-dhl-tracking-form', array($this,'render_form'));
         add_action( 'wp_ajax_get_dhl_tracking', array($this,'get_dhl_tracking') );
+        add_action( 'wp_ajax_nopriv_get_dhl_tracking', array($this,'get_dhl_tracking') );
         add_action('wp_enqueue_scripts',array($this,'register_dhl_scripts'));
         add_action('admin_menu', array($this,'dhl_tracking_plugin_create_menu'));
         add_action( 'admin_init', array($this,'dhl_tracking_plugin_settings') );
