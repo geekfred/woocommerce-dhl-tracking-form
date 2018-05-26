@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Woo DHL Tracking Form\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-24 09:24+0000\n"
-"PO-Revision-Date: 2018-05-24 09:30+0000\n"
+"POT-Creation-Date: 2018-05-25 17:56+0000\n"
+"PO-Revision-Date: 2018-05-25 17:58+0000\n"
 "Last-Translator: mattias <mattiasnording@gmail.com>\n"
 "Language-Team: Svenska\n"
 "Language: sv_SE\n"
@@ -13,35 +13,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: functions.php:61
+#: functions.php:121
 msgid " Recommended if you use non-unique references"
 msgstr "Rekomenderat om du använder icke-unika referenser"
 
-#: functions.php:75
+#: functions.php:128
+msgid "Add to tracking page"
+msgstr "Lägg till spårnings-sida"
+
+#: functions.php:162
 msgid "API Password"
 msgstr "API Lösenord"
 
-#: functions.php:69
+#: functions.php:156
 msgid "Api Username"
 msgstr "API Användarnamn"
 
-#: functions.php:71
+#: functions.php:158
 msgid "Click here for Portal"
 msgstr "Klicka här för portalen"
 
-#: functions.php:81
+#: functions.php:70
+msgid "Click here to track your package"
+msgstr "Klicka här för att spåra ditt paket"
+
+#: functions.php:168
 msgid "Create Debug log?"
 msgstr "Skapa debug-log?"
 
-#: functions.php:147
+#: functions.php:250
 msgid "Date"
 msgstr "Datum"
 
-#. Description of the plugin
 msgid "Enabling fetching tracking info from DHL Freight."
 msgstr "Hämtar spårningsinformation från DHL Freight"
 
-#: functions.php:149
+#: functions.php:252
 msgid "Event"
 msgstr "Händelse"
 
@@ -53,7 +60,7 @@ msgstr ""
 msgid "https://mnording.com"
 msgstr ""
 
-#: functions.php:63
+#: functions.php:123
 msgid ""
 "In order to enable private methods on your account, you must email se."
 "ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT "
@@ -63,7 +70,7 @@ msgstr ""
 "ecom@dhl.com eller ringa  0771 345 345 och begära access till ACT Webservice "
 "för ditt myACT konto."
 
-#: functions.php:148
+#: functions.php:251
 msgid "Location"
 msgstr "Plats"
 
@@ -71,15 +78,32 @@ msgstr "Plats"
 msgid "Mnording"
 msgstr ""
 
-#: functions.php:101
+#: functions.php:152
+msgid ""
+"On what page have you hosted the tracking shortcode? This will be used to "
+"link the customer from order emails"
+msgstr ""
+"Vilken sida har du lagt shortcoden? Denna kommer användas i mailen som "
+"skickas till kund."
+
+#: functions.php:192
 msgid "or"
 msgstr "eller"
 
-#: functions.php:101
+#: functions.php:192
 msgid "Order Id"
 msgstr "Order ID"
 
-#: functions.php:60
+#: functions.php:130
+msgid ""
+"Should the customer emails be populated with a link to the tracking page? "
+"This requires you to add the tracking-ID to the order before sending the "
+"email"
+msgstr ""
+"Ska kund-mailen få en länk till tracking-sidan? Detta kräver att du anger "
+"sändningsID på ordern innan mailen skickas till kunden."
+
+#: functions.php:120
 msgid ""
 "This requires an API Key, but also ensure that only your own consignments "
 "are returned from the API."
@@ -87,19 +111,23 @@ msgstr ""
 "Detta kräver en API nyckel, men gör även att endast era egna skeppningar \"\n"
 "\"returneras av APIt."
 
-#: functions.php:102
+#: functions.php:69 functions.php:193
 msgid "Track package"
 msgstr "Spåra paket"
 
-#: functions.php:100
+#: functions.php:81 functions.php:191
 msgid "Tracking ID"
 msgstr "Sändnings ID"
 
-#: functions.php:58
+#: functions.php:135
+msgid "Tracking page"
+msgstr "Spårnings-sida"
+
+#: functions.php:118
 msgid "Use Private Methods?"
 msgstr "Använda privata metoder?"
 
-#: functions.php:77
+#: functions.php:164
 msgid ""
 "What is your API password. Should be the same as your password to the myACT "
 "portal"
@@ -107,7 +135,7 @@ msgstr ""
 "Vad är ditt API lösenord? Ska vara samma som ditt lösenord till myACT "
 "portalen"
 
-#: functions.php:71
+#: functions.php:158
 msgid ""
 "What is your API username. Should be the same as your login to the myACT "
 "portal"
@@ -119,10 +147,10 @@ msgstr ""
 msgid "Woo DHL Tracking Form"
 msgstr ""
 
-#: functions.php:59 functions.php:82
+#: functions.php:119 functions.php:129 functions.php:169
 msgid "Yes"
 msgstr "Ja"
 
-#: functions.php:117
+#: functions.php:213
 msgid "Your shipment:"
 msgstr "Din sändning:"

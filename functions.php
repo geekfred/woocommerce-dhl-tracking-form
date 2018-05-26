@@ -20,10 +20,11 @@
  * License URI: https://opensource.org/licenses/MIT
  */
 require_once 'classes/DHLWebService.php';
+require_once 'classes/DHLMetaBox.php';
+require_once 'classes/DHLTrackingEmail.php';
 class DHLTracking {
     public function __construct()
     {
-
        add_shortcode('woo-dhl-tracking-form', array($this,'render_form'));
         add_action( 'wp_ajax_get_dhl_tracking', array($this,'get_dhl_tracking') );
         add_action( 'wp_ajax_nopriv_get_dhl_tracking', array($this,'get_dhl_tracking') );
@@ -31,20 +32,34 @@ class DHLTracking {
         add_action('admin_menu', array($this,'dhl_tracking_plugin_create_menu'));
         add_action( 'admin_init', array($this,'dhl_tracking_plugin_settings') );
         add_action( 'plugins_loaded', array($this,'dhl_tracking_plugin_textdomain') );
+        new DHLMetaBox();
+        new DHLTrackingEmail();
+        $this->shouldlog= get_option("should_log");
+
     }
     function dhl_tracking_plugin_textdomain() {
         load_plugin_textdomain( 'woo-dhl-tracking-form', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
     }
     public function dhl_tracking_plugin_settings() {
-        register_setting( 'dhl_tracking_settings-group', 'private_api' );
-        register_setting( 'dhl_tracking_settings-group', 'api_password' );
-        register_setting( 'dhl_tracking_settings-group', 'api_username' );
-        register_setting( 'dhl_tracking_settings-group', 'should_log' );
+
+        $args = array(
+            'type' => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default' => NULL,
+        );
+        register_setting( 'dhl_tracking_settings-group', 'private_api' ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'api_password'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'api_username'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'should_log'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'add_to_tracking_page'  ,$args);
+        register_setting( 'dhl_tracking_settings-group', 'tracking_page' ,$args );
+
     }
     public function dhl_tracking_plugin_create_menu() {
         add_options_page('Woo DHL Tracking Settings', 'Woo DHL Tracking', 'administrator','woo-dhl-tracking-form' ,array($this,'dhl_tracking_settings_page') );
 
     }
+
     public function dhl_tracking_settings_page() {
         ?>
         <div class="wrap">
@@ -63,7 +78,33 @@ class DHLTracking {
                         <br/>
                             <?php _e("In order to enable private methods on your account, you must email se.ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT Webservice and specify your myACT account. ","woo-dhl-tracking-form"); ?>
                         </td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row"><?php _e("Add to tracking page","woo-dhl-tracking-form"); ?></th>
+                        <td><input name="add_to_tracking_page" type="checkbox" value="1" <?php checked( '1', get_option( 'add_to_tracking_page' ) ); ?> /><?php _e("Yes","woo-dhl-tracking-form")?></td>
+                        <td><?php _e("Should the customer emails be populated with a link to the tracking page? This requires you to add the tracking-ID to the order before sending the email","woo-dhl-tracking-form");?>
+                        </td>
 
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row"><?php _e("Tracking page","woo-dhl-tracking-form"); ?></th>
+                        <td><select name="tracking_page">
+                                <option selected="selected" disabled="disabled" value=""><?php echo esc_attr( __( 'Select page' ) ); ?></option>
+                                <?php
+                                $selected_page = get_option( 'tracking_page' );
+                                $pages = get_pages();
+                                foreach ( $pages as $page ) {
+
+                                    $option = '<option value="' . $page->ID . '" ';
+                                    $option .= ( $page->ID == $selected_page ) ? 'selected="selected"' : '';
+                                    $option .= '>';
+                                    $option .= $page->post_title;
+                                    $option .= '</option>';
+                                    echo $option;
+                                }
+                                ?>
+                            </select></td>
+                        <td><?php _e("On what page have you hosted the tracking shortcode? This will be used to link the customer from order emails","woo-dhl-tracking-form"); ?></td>
                     </tr>
 
                     <tr valign="top">
@@ -90,6 +131,10 @@ class DHLTracking {
         </div>
     <?php }
     public function render_form(){
+        $prefillTracking = "";
+        if(isset($_GET["trackingid"])){
+            $prefillTracking = $_GET["trackingid"];
+        }
         $html = '<style>';
         $html .= '#dhl-tracking-form-container {border-bottom: 1px dotted black;float: left;width: 100%; padding: 10px;}';
         $html .= '#dhl-tracking-form-container button { float:right;}';
@@ -98,12 +143,17 @@ class DHLTracking {
         $html .= '@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}';
         $html .= '</style>';
         $html .= "<div id='dhl-tracking-form-container'>";
-        $html .= __("Tracking ID","woo-dhl-tracking-form")." <input type='text' name='trackingid' id='trackingid' placeholder='Sändnings ID'>";
+        $html .= __("Tracking ID","woo-dhl-tracking-form")." <input type='text' value='".$prefillTracking."' name='trackingid' id='trackingid' placeholder='Sändnings ID'>";
         $html .= " ".__("or","woo-dhl-tracking-form")." ".__("Order Id","woo-dhl-tracking-form")." <input type='text' id='orderid' name='orderid' placeholder='Order ID'>";
         $html .= "<button>".__("Track package","woo-dhl-tracking-form")."</button>";
         $html .= "</div>";
         wp_enqueue_script('woo-dhl-tracking-form');
-        $html.="<div id='dhl-tracking-response-container'></div>";
+        $html.="<div id='dhl-tracking-response-container'>";
+        if($prefillTracking !== ""){
+           $tracking=  $this->GetTrackingInfo($prefillTracking,"");
+            $html .= $this->renderTable($tracking);
+        }
+        $html.= "</div>";
         return $html;
     }
     function register_dhl_scripts()
@@ -120,34 +170,62 @@ class DHLTracking {
         return $header."".$html."".$footer;
     }
 
-    function get_dhl_tracking() {
-        $lang = get_bloginfo( $show = 'language');
-        $lang = substr($lang,0,2);
-        $this->dhl = new DhlWebservice(get_option('api_password'),get_option('api_username'),$lang,get_option('should_log'));
-        $trackingId = $_GET['trackingID'];
+    /***
+     * @param $trackingId What ID are we looking for?
+     * @param $orderID What order ID are we looking for?
+     * @param string $language What language to display the response in?
+     * @return array|string The response array. Cleaned and ready for rendering html
+     */
+    private function GetTrackingInfo($trackingId,$orderID,$language="SV"){
+
         $resp = "";
         $privateAPI = get_option('private_api');
-
+        $this->dhl = new DhlWebservice(get_option('api_password'),get_option('api_username'),$language,get_option('should_log'));
         if($trackingId != ""){
             if($privateAPI === "1"){
                 $resp = $this->dhl->GetByShipmentId($trackingId);
             }else{
                 $resp = $this->dhl->GetByShipmentIdPublic($trackingId);
             }
-
         }
-        if($trackingId == ""){
-            $orderid = urlencode($_GET["orderID"]);
+        if($trackingId == ""){ // we only check orderID if there is no tracking. Tracking is alot quicker to find
+            $orderid = $orderID;
             if($privateAPI === "1"){
                 $resp = $this->dhl->GetShipmentByReference($orderid);
             }else {
                 $resp = $this->dhl->GetShipmentByReferencePublic($orderid);
             }
         }
+
+        return $resp;
+    }
+
+    /***
+     *  AJAX from frontend calls this to get the response from the form
+     */
+    public function get_dhl_tracking() {
+        $lang = get_bloginfo( $show = 'language');
+        $lang = substr($lang,0,2);
+        $trackingId = $_GET['trackingID'];
+        $orderid = urlencode($_GET["orderID"]);
+        $resp = $this->GetTrackingInfo($trackingId,$orderid,$lang);
+        $html = $this->renderTable($resp);
+        echo $html;
+        wp_die(); // this is required to terminate immediately and return a proper response
+    }
+
+    /***
+     * @param $resp The response array from the dhl web service
+     * @return string Will return rendable HTML
+     */
+    private function renderTable($resp){
         $html = "<table>";
         $html .= "<th>".__("Date","woo-dhl-tracking-form")."</th>";
         $html .= "<th>".__("Location","woo-dhl-tracking-form")."</th>";
         $html .= "<th>".__("Event","woo-dhl-tracking-form")."</th>";
+        if(!is_array($resp)){
+            return $this->createHtml(__("Unable to find your shipment","woo-dhl-tracking-form"));
+        }
         foreach($resp as $data){
             $html .= "<tr>";
             $html .= "<td>";
@@ -162,10 +240,10 @@ class DHLTracking {
             $html .= "</tr>";
         }
         $html .= "</table>";
-        echo $this->createHtml($html);
-        wp_die(); // this is required to terminate immediately and return a proper response
-    }
+        return $this->createHtml($html);
 }
+}
+// Gotta make sure we got Woocommerce in the house!
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
     $dhl = new DHLTracking();
 }
