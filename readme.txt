@@ -31,6 +31,7 @@ Activate the plugin through the 'Plugins' menu in WordPress
 That is because your ID is not unique in DHLs systems. Either search by trackingID, or sign up with myACT in order to limit your requests to only your shipments.
 
 == Changelog ==
+1.0.1 - Feature release for adding tracking link to email
 1.0.2 - Bug for missing NoPriv
 1.0.1 - Fix bug for requests without debug-mode
 1.0.0 - Initial release

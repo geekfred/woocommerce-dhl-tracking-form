@@ -25,7 +25,7 @@ require_once 'classes/DHLTrackingEmail.php';
 class DHLTracking {
     public function __construct()
     {
-       add_shortcode('woo-dhl-tracking-form', array($this,'render_form'));
+        add_shortcode('woo-dhl-tracking-form', array($this,'render_form'));
         add_action( 'wp_ajax_get_dhl_tracking', array($this,'get_dhl_tracking') );
         add_action( 'wp_ajax_nopriv_get_dhl_tracking', array($this,'get_dhl_tracking') );
         add_action('wp_enqueue_scripts',array($this,'register_dhl_scripts'));
@@ -75,7 +75,7 @@ class DHLTracking {
                         <td><input name="private_api" type="checkbox" value="1" <?php checked( '1', get_option( 'private_api' ) ); ?> /><?php _e("Yes","woo-dhl-tracking-form")?></td>
                         <td><?php _e("This requires an API Key, but also ensure that only your own consignments are returned from the API.","woo-dhl-tracking-form");?>
                             <strong><?php _e(" Recommended if you use non-unique references","woo-dhl-tracking-form")?></strong>
-                        <br/>
+                            <br/>
                             <?php _e("In order to enable private methods on your account, you must email se.ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT Webservice and specify your myACT account. ","woo-dhl-tracking-form"); ?>
                         </td>
                     </tr>
@@ -150,7 +150,7 @@ class DHLTracking {
         wp_enqueue_script('woo-dhl-tracking-form');
         $html.="<div id='dhl-tracking-response-container'>";
         if($prefillTracking !== ""){
-           $tracking=  $this->GetTrackingInfo($prefillTracking,"");
+            $tracking=  $this->GetTrackingInfo($prefillTracking,"");
             $html .= $this->renderTable($tracking);
         }
         $html.= "</div>";
@@ -241,7 +241,7 @@ class DHLTracking {
         }
         $html .= "</table>";
         return $this->createHtml($html);
-}
+    }
 }
 // Gotta make sure we got Woocommerce in the house!
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {

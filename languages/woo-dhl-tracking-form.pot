@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Woo DHL Tracking Form\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-25 17:56+0000\n"
+"POT-Creation-Date: 2018-05-26 19:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,132 +14,136 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: functions.php:121
+#: functions.php:74
+msgid "Use Private Methods?"
+msgstr ""
+
+#: functions.php:75 functions.php:84 functions.php:124
+msgid "Yes"
+msgstr ""
+
+#: functions.php:76
+msgid ""
+"This requires an API Key, but also ensure that only your own consignments "
+"are returned from the API."
+msgstr ""
+
+#: functions.php:77
 msgid " Recommended if you use non-unique references"
 msgstr ""
 
-#: functions.php:128
-msgid "Add to tracking page"
-msgstr ""
-
-#: functions.php:162
-msgid "API Password"
-msgstr ""
-
-#: functions.php:156
-msgid "Api Username"
-msgstr ""
-
-#: functions.php:158
-msgid "Click here for Portal"
-msgstr ""
-
-#: functions.php:70
-msgid "Click here to track your package"
-msgstr ""
-
-#: functions.php:168
-msgid "Create Debug log?"
-msgstr ""
-
-#: functions.php:250
-msgid "Date"
-msgstr ""
-
-#. Description of the plugin
-msgid "Enabling fetching tracking info from DHL Freight."
-msgstr ""
-
-#: functions.php:252
-msgid "Event"
-msgstr ""
-
-#. URI of the plugin
-msgid "https://github.com/mnording/woocommerce-woo-dhl-tracking-form"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "https://mnording.com"
-msgstr ""
-
-#: functions.php:123
+#: functions.php:79
 msgid ""
 "In order to enable private methods on your account, you must email se."
 "ecom@dhl.com or call SE ECOM 0771 345 345 and request access to The ACT "
 "Webservice and specify your myACT account. "
 msgstr ""
 
-#: functions.php:251
-msgid "Location"
+#: functions.php:83
+msgid "Add to tracking page"
 msgstr ""
 
-#. Author of the plugin
-msgid "Mnording"
-msgstr ""
-
-#: functions.php:152
-msgid ""
-"On what page have you hosted the tracking shortcode? This will be used to "
-"link the customer from order emails"
-msgstr ""
-
-#: functions.php:192
-msgid "or"
-msgstr ""
-
-#: functions.php:192
-msgid "Order Id"
-msgstr ""
-
-#: functions.php:130
+#: functions.php:85
 msgid ""
 "Should the customer emails be populated with a link to the tracking page? "
 "This requires you to add the tracking-ID to the order before sending the "
 "email"
 msgstr ""
 
-#: functions.php:120
-msgid ""
-"This requires an API Key, but also ensure that only your own consignments "
-"are returned from the API."
-msgstr ""
-
-#: functions.php:69 functions.php:193
-msgid "Track package"
-msgstr ""
-
-#: functions.php:81 functions.php:191
-msgid "Tracking ID"
-msgstr ""
-
-#: functions.php:135
+#: functions.php:90
 msgid "Tracking page"
 msgstr ""
 
-#: functions.php:118
-msgid "Use Private Methods?"
+#: functions.php:107
+msgid ""
+"On what page have you hosted the tracking shortcode? This will be used to "
+"link the customer from order emails"
 msgstr ""
 
-#: functions.php:164
+#: functions.php:111
+msgid "Api Username"
+msgstr ""
+
+#: functions.php:113
+msgid ""
+"What is your API username. Should be the same as your login to the myACT "
+"portal"
+msgstr ""
+
+#: functions.php:113
+msgid "Click here for Portal"
+msgstr ""
+
+#: functions.php:117
+msgid "API Password"
+msgstr ""
+
+#: functions.php:119
 msgid ""
 "What is your API password. Should be the same as your password to the myACT "
 "portal"
 msgstr ""
 
-#: functions.php:158
-msgid ""
-"What is your API username. Should be the same as your login to the myACT "
-"portal"
+#: functions.php:123
+msgid "Create Debug log?"
+msgstr ""
+
+#: functions.php:146 classes/DHLMetaBox.php:21
+msgid "Tracking ID"
+msgstr ""
+
+#: functions.php:147
+msgid "or"
+msgstr ""
+
+#: functions.php:147
+msgid "Order Id"
+msgstr ""
+
+#: functions.php:148 classes/DHLTrackingEmail.php:30
+msgid "Track package"
+msgstr ""
+
+#: functions.php:168
+msgid "Your shipment:"
+msgstr ""
+
+#: functions.php:223
+msgid "Date"
+msgstr ""
+
+#: functions.php:224
+msgid "Location"
+msgstr ""
+
+#: functions.php:225
+msgid "Event"
+msgstr ""
+
+#: functions.php:227
+msgid "Unable to find your shipment"
+msgstr ""
+
+#: classes/DHLTrackingEmail.php:31
+msgid "Click here to track your package"
 msgstr ""
 
 #. Name of the plugin
 msgid "Woo DHL Tracking Form"
 msgstr ""
 
-#: functions.php:119 functions.php:129 functions.php:169
-msgid "Yes"
+#. Description of the plugin
+msgid "Enabling fetching tracking info from DHL Freight."
 msgstr ""
 
-#: functions.php:213
-msgid "Your shipment:"
+#. URI of the plugin
+msgid "https://github.com/mnording/woocommerce-woo-dhl-tracking-form"
+msgstr ""
+
+#. Author of the plugin
+msgid "Mnording"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://mnording.com"
 msgstr ""
