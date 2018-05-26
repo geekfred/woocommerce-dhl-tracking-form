@@ -139,6 +139,9 @@ class DHLTracking {
         $html .= '#dhl-tracking-form-container {border-bottom: 1px dotted black;float: left;width: 100%; padding: 10px;}';
         $html .= '#dhl-tracking-form-container button { float:right;}';
         $html .= '#dhl-tracking-response-container{ float:left;width:100%;position:relative;}';
+        $html .= '@media only screen and (max-width: 600px) { ';
+        $html .= '#dhl-tracking-form-container input {width:150px; margin-bottom:20px;}';
+        $html .= '#dhl-tracking-form-container button {width:100%; margin-top:20px; }  }';
         $html .= '.loader {border: 16px solid #f3f3f3;border-top: 16px solid #3498db;border-radius: 50%;width: 120px;height: 120px; animation: spin 2s linear infinite; position:absolute;left:45%;}';
         $html .= '@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}';
         $html .= '</style>';
