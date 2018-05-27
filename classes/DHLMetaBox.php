@@ -10,7 +10,7 @@ class DHLMetaBox
 {
      function __construct(){
          add_action("add_meta_boxes", array($this,"add_custom_meta_box"));
-         add_action("save_post", array($this,"save_woo_dhl_tracking_meta_box"), 10, 3);
+         add_action("save_post", array($this,"save_woo_dhl_tracking_meta_box"), 1, 3);
      }
 
     function woo_dhl_tracking_meta_box_markup($object)
