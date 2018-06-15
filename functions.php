@@ -11,7 +11,7 @@
  * Plugin Name: Woo DHL Tracking Form
  * Plugin URI:  https://github.com/mnording/woocommerce-woo-dhl-tracking-form
  * Description: Enabling fetching tracking info from DHL Freight.
- * Version:     1.1.0
+ * Version:     1.2.0
  * Author:      Mnording
  * Author URI:  https://mnording.com
  * Text Domain: woo-dhl-tracking-form
@@ -32,10 +32,9 @@ class DHLTracking {
         add_action('admin_menu', array($this,'dhl_tracking_plugin_create_menu'));
         add_action( 'admin_init', array($this,'dhl_tracking_plugin_settings') );
         add_action( 'plugins_loaded', array($this,'dhl_tracking_plugin_textdomain') );
-        new DHLMetaBox();
-        new DHLTrackingEmail();
         $this->shouldlog= get_option("should_log");
-
+        new DHLMetaBox();
+        new DHLTrackingEmail($this->shouldlog);
     }
     function dhl_tracking_plugin_textdomain() {
         load_plugin_textdomain( 'woo-dhl-tracking-form', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
@@ -53,6 +52,7 @@ class DHLTracking {
         register_setting( 'dhl_tracking_settings-group', 'should_log'  ,$args);
         register_setting( 'dhl_tracking_settings-group', 'add_to_tracking_page'  ,$args);
         register_setting( 'dhl_tracking_settings-group', 'tracking_page' ,$args );
+        register_setting( 'dhl_tracking_settings-group', 'orderid_fallback' ,$args );
 
     }
     public function dhl_tracking_plugin_create_menu() {
@@ -83,6 +83,13 @@ class DHLTracking {
                         <th scope="row"><?php _e("Add to tracking page","woo-dhl-tracking-form"); ?></th>
                         <td><input name="add_to_tracking_page" type="checkbox" value="1" <?php checked( '1', get_option( 'add_to_tracking_page' ) ); ?> /><?php _e("Yes","woo-dhl-tracking-form")?></td>
                         <td><?php _e("Should the customer emails be populated with a link to the tracking page? This requires you to add the tracking-ID to the order before sending the email","woo-dhl-tracking-form");?>
+                        </td>
+
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row"><?php _e("Use Order ID for tracking?","woo-dhl-tracking-form"); ?></th>
+                        <td><input name="orderid_fallback" type="checkbox" value="1" <?php checked( '1', get_option( 'orderid_fallback' ) ); ?> /><?php _e("Yes","woo-dhl-tracking-form")?></td>
+                        <td><?php _e("Should the link use the internal Order ID for tracking instead of shipment ID ? This requires the use of private methods","woo-dhl-tracking-form");?>
                         </td>
 
                     </tr>
@@ -135,6 +142,10 @@ class DHLTracking {
         if(isset($_GET["trackingid"])){
             $prefillTracking = $_GET["trackingid"];
         }
+        $prefillOrderId = "";
+        if(isset($_GET["orderid"])){
+            $prefillOrderId = $_GET["orderid"];
+        }
         $html = '<style>';
         $html .= '#dhl-tracking-form-container {border-bottom: 1px dotted black;float: left;width: 100%; padding: 10px;}';
         $html .= '#dhl-tracking-form-container button { float:right;}';
@@ -147,13 +158,17 @@ class DHLTracking {
         $html .= '</style>';
         $html .= "<div id='dhl-tracking-form-container'>";
         $html .= __("Tracking ID","woo-dhl-tracking-form")." <input type='text' value='".$prefillTracking."' name='trackingid' id='trackingid' placeholder='Sändnings ID'>";
-        $html .= " ".__("or","woo-dhl-tracking-form")." ".__("Order Id","woo-dhl-tracking-form")." <input type='text' id='orderid' name='orderid' placeholder='Order ID'>";
+        $html .= " ".__("or","woo-dhl-tracking-form")." ".__("Order Id","woo-dhl-tracking-form")." <input type='text' value='".$prefillOrderId."' id='orderid' name='orderid' placeholder='Order ID'>";
         $html .= "<button>".__("Track package","woo-dhl-tracking-form")."</button>";
         $html .= "</div>";
         wp_enqueue_script('woo-dhl-tracking-form');
         $html.="<div id='dhl-tracking-response-container'>";
         if($prefillTracking !== ""){
             $tracking=  $this->GetTrackingInfo($prefillTracking,"");
+            $html .= $this->renderTable($tracking);
+        }
+        else if($prefillOrderId !== ""){
+            $tracking=  $this->GetTrackingInfo("",$prefillOrderId);
             $html .= $this->renderTable($tracking);
         }
         $html.= "</div>";
